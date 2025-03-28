@@ -97,8 +97,17 @@
               "bearing": 0
             }
           },
-          "source": "STAC_land_productivity_and_SIF_udf.py",
-          "headers": []
+          "source": "STAC_and_land_common.py",
+          "headers": [
+            {
+              "module_name": "get_land_prod_data",
+              "source_file": "utiget_land_prod_datals.py"
+            },
+            {
+              "module_name": "get_sif_data",
+              "source_file": "get_sif_data.py"
+            }    
+          ]
         }
       }
     ],
