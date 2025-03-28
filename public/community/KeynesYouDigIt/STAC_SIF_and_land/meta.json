@@ -12,7 +12,6 @@
           "entrypoint": "udf",
           "parameters": {},
           "metadata": {
-            "fused:assetUrl": "https://fused-magic.s3.us-west-2.amazonaws.com/thumbnails/udfs-staging/alexgleith1.png",
             "fused:defaultParameters": [
               {
                 "parameter": "year",
@@ -37,7 +36,6 @@
                 ]
               }
             ],
-            "fused:datasets": "Digital Elevation Model",
             "fused:tags": [
               {
                 "id": "band-algebra",
@@ -71,11 +69,9 @@
             "fused:slug": "Geoparquet_STAC_Land_Productivity",
             "fused:name": "Geoparquet_STAC_Land_Productivity",
             "fused:id": null,
-            "fused:gitUrl": "https://github.com/fusedio/udfs/tree/8ae09cfd8c08476b80a2c46ecff97b2e8f0b12bd/public/Geoparquet_STAC_Land_Productivity/",
-            "fused:gitShortUrl": "https://github.com/fusedio/udfs/tree/8ae09cf/public/Geoparquet_STAC_Land_Productivity/",
-            "fused:gitPath": "public/Geoparquet_STAC_Land_Productivity",
-            "fused:gitRef": "8ae09cfd8c08476b80a2c46ecff97b2e8f0b12bd",
-            "fused:explorerPin": "13",
+            "fused:gitUrl": "https://github.com/KeynesYouDigIt/udfs/tree/stac_land_sif_collection/public/community/KeynesYouDigIt/STAC_SIF_and_land/",
+            "fused:gitPath": "public/community/KeynesYouDigIt/STAC_SIF_and_land",
+            "fused:gitRef": "stac_land_sif_collection",
             "fused:gitAuthorNames": [
               "Vincent Buscarello"
             ],
@@ -85,9 +81,9 @@
             "fused:gitAuthorUrls": [
               "https://github.com/KeynesYouDigIt"
             ],
-            "fused:gitLastModified": "2025-03-28T00:25:36+00:00",
+            "fused:gitLastModified": "2025-03-28T20:50:50+00:00",
             "fused:explorerTab": "public",
-            "fused:gitRepo": "fusedio/udfs",
+            "fused:gitRepo": "KeynesYouDigIt/udfs",
             "fused:defaultViewState": {
               "enable": true,
               "latitude": 16.81999640421226,
