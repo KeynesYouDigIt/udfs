@@ -8,7 +8,7 @@
         "type": "udf",
         "udf": {
           "type": "geopandas_v2",
-          "name": "STAC_SIF_and_Land",
+          "name": "STAC_and_land_common",
           "entrypoint": "udf",
           "parameters": {},
           "metadata": {
@@ -73,13 +73,9 @@
           "source": "STAC_and_land_common.py",
           "headers": [
             {
-              "module_name": "get_land_prod_data",
-              "source_file": "get_land_prod_data.py"
-            },
-            {
-              "module_name": "get_sif_data",
-              "source_file": "get_sif_data.py"
-            }    
+              "module_name": "utils",
+              "source_file": "utils.py"
+            }
           ]
         }
       }
