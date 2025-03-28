@@ -12,30 +12,6 @@
           "entrypoint": "udf",
           "parameters": {},
           "metadata": {
-            "fused:defaultParameters": [
-              {
-                "parameter": "year",
-                "value": "",
-                "type": "string",
-                "suggestedValues": [
-                  "2000",
-                  "2001",
-                  "2022",
-                  "2023"
-                ]
-              },
-              {
-                "parameter": "variable",
-                "value": "",
-                "type": "string",
-                "suggestedValues": [
-                  "sif_740",
-                  "evi2",
-                  "ndvi",
-                  "msavi"
-                ]
-              }
-            ],
             "fused:tags": [
               {
                 "id": "band-algebra",
@@ -54,7 +30,7 @@
                 "label": "stac"
               }
             ],
-            "fused:description": "# Geoparquet STAC Example Publishing Land Productivity Analysis\n\n## Overview\n\nThis visualisation is from a Land Productivity analysis as part of the\n[Land Degradation Neutrality](https://www.unccd.int/land-and-life/land-degradation-neutrality/overview)\ncomponent of the UN Sustainability Goal, 15.3.\n\nThe interesting part of this use case for Fused is that it all runs serverless, so there are\nhundreds of data packages on S3, containing STAC Items pointing at Cloud Optimised GeoTIFF assets\nand rather than running a STAC API service as an index, we've created a single Geoparquet\nfile using [STAC Geoparquet](https://stac-utils.github.io/stac-geoparquet), which is then accessed\nusing the [stac-rs](https://github.com/stac-utils/stac-rs) tool and\n[odc-stac](https://odc-stac.readthedocs.io/en/latest/_api/odc.stac.load.html).\n\nThe end result is a scalable, dynamic visualisation with only Fused as a backend.\n\n## External links\n\n- [Leaflet visualisation](https://data.ldn.auspatious.com/testing/map.html?year=2023#10/17.2975/-88.3088)\n\n## Run this in any Jupyter Notebook\n\n```python\nimport fused\nudf = fused.load(\"https://github.com/fusedio/udfs/tree/main/public/Geoparquet_STAC_Example\")\narr = fused.run(udf=udf, x=4092, y=2241, z=15)\narr\n```\n",
+            "fused:description": "#Forthcoming.....",
             "fused:vizConfig": {
               "@@type": "TileLayer",
               "minZoom": 6,
@@ -69,9 +45,9 @@
             "fused:slug": "Geoparquet_STAC_Land_Productivity",
             "fused:name": "Geoparquet_STAC_Land_Productivity",
             "fused:id": null,
-            "fused:gitUrl": "https://github.com/KeynesYouDigIt/udfs/tree/stac_land_sif_collection/public/community/KeynesYouDigIt/STAC_SIF_and_land/",
+            "fused:gitUrl": "https://github.com/KeynesYouDigIt/udfs/tree/3dd14090900e43226f6dae8fb89265d6be28e174/public/community/KeynesYouDigIt/STAC_SIF_and_land/",
             "fused:gitPath": "public/community/KeynesYouDigIt/STAC_SIF_and_land",
-            "fused:gitRef": "stac_land_sif_collection",
+            "fused:gitRef": "3dd14090900e43226f6dae8fb89265d6be28e174",
             "fused:gitAuthorNames": [
               "Vincent Buscarello"
             ],
@@ -91,7 +67,8 @@
               "zoom": 7.42017091785984,
               "pitch": 0,
               "bearing": 0
-            }
+            },
+            "fused:assetUrl": "https://fused-magic.s3.us-west-2.amazonaws.com/thumbnails/udfs-staging/Fused_Logo.png"
           },
           "source": "STAC_and_land_common.py",
           "headers": [
