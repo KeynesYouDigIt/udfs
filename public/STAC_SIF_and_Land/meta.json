@@ -8,7 +8,7 @@
         "type": "udf",
         "udf": {
           "type": "geopandas_v2",
-          "name": "Geoparquet_STAC_Land_Productivity",
+          "name": "STAC_SIF_and_Land",
           "entrypoint": "udf",
           "parameters": {},
           "metadata": {
@@ -30,6 +30,7 @@
                 "value": "",
                 "type": "string",
                 "suggestedValues": [
+                  "sif_740",
                   "evi2",
                   "ndvi",
                   "msavi"
@@ -76,18 +77,15 @@
             "fused:gitRef": "8ae09cfd8c08476b80a2c46ecff97b2e8f0b12bd",
             "fused:explorerPin": "13",
             "fused:gitAuthorNames": [
-              "Alex Leith"
+              "Vincent Buscarello"
             ],
             "fused:gitAuthorUsernames": [
-              "alexgleith"
+              "KeynesYouDigIt"
             ],
             "fused:gitAuthorUrls": [
-              "https://github.com/alexgleith"
+              "https://github.com/KeynesYouDigIt"
             ],
-            "fused:gitAuthorAvatarUrls": [
-              "https://avatars.githubusercontent.com/u/3445853?v=4"
-            ],
-            "fused:gitLastModified": "2024-11-20T00:25:36+00:00",
+            "fused:gitLastModified": "2025-03-28T00:25:36+00:00",
             "fused:explorerTab": "public",
             "fused:gitRepo": "fusedio/udfs",
             "fused:defaultViewState": {
@@ -99,7 +97,7 @@
               "bearing": 0
             }
           },
-          "source": "Geoparquet_STAC_Land_Productivity.py",
+          "source": "STAC_land_productivity_and_SIF_udf.py",
           "headers": []
         }
       }
