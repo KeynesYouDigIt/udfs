@@ -127,15 +127,17 @@ def get_sif_data(bbox: list[int], overlap_buffer_size: float = 3.0) -> xr.Datase
     return _detect_and_set_rio_data(sif_d_within_box)
 
 
-async def get_land_prod_data(year: int, bbox:gpd.GeoDataFrame):
+# IF stacrs not updated?
+def get_land_prod_data(year: int, bbox:gpd.GeoDataFrame) -> list[Item]:
 
     # Find Items that intersect the bounding box and time period
-    item_dicts = await stacrs.search(
+    # year can be passed in as a parameter for the function
+    item_dicts = stacrs.search(
         "https://data.ldn.auspatious.com/geo_ls_lp/geo_ls_lp_0_1_0.parquet",
         bbox=bbox.total_bounds,
         datetime=f"{year}-01-01T00:00:00.000Z/{year}-12-31T23:59:59.999Z",
     )
-    items = [Item.from_dict(d) for d in item_dicts]
+    items: list[Item] = [Item.from_dict(d) for d in item_dicts]
 
     print(type(items))
     print(len(items))
