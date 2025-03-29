@@ -4,6 +4,9 @@ def udf(
     bbox: fused.types.TileGDF = None,
     year: int = 2023,
 ):
+    import os
+    from dotenv import load_dotenv
+
     import odc.stac
     import numpy as np
     import xarray as xr
@@ -11,27 +14,44 @@ def udf(
     import pystac
     from scipy.interpolate import griddata
 
-    # TODO - internal deps.
-    # force add here or create importable-deps?
-    # try the later first.
-    from src.HARDCODEDBBOXES import get_default_bbox_qr_mex
-    from src.LANDPROD_SEARCH_DONOTPUSH import get_land_prod_data
-    from src.SIFDATAPRIVATEDONOTPUSH import get_sif_data
+    import geopandas as gpd
+    import shapely
+
+    env_file_path = '/tmp/.env'
+    # Write the environment variables to the .env file
+    load_dotenv(env_file_path, override=True)
+    getem = fused.load(
+        "https://github.com/KeynesYouDigIt/udfs/tree/stac_land_sif_collection/public/community/KeynesYouDigIt/STAC_SIF_and_land"
+    )
+    print(getem)
+
+    get_sif_data = getem.utils.get_sif_data
+    get_land_prod_data = getem.utils.get_land_prod_data
 
 
     # TODO - don't hardcode bbox
     print("GRABBING BBOX")
-    mex_box = get_default_bbox_qr_mex()
+    # Ridiculous and silly guess at QR/BZ Farmland for a POC
+    mex_box = gpd.GeoDataFrame(
+        {"x": [115], "y": [229], "z": [9]}, 
+        geometry=[
+            shapely.box(
+                -89.149375,
+                17.798733095556155,
+                -88.90090625,
+                18.0834624514267062
+            )
+        ],
+        crs=4326)
 
     print("GRABBING LAND PROD DATA")
     import asyncio
     lpd = asyncio.run(get_land_prod_data(year=year, bbox=mex_box))
-    return
-
     # Make me a for loop
     # save and add assets (it1.SIF_740, it1.SIF-Unadjusted)
     
     for lpd_item in lpd:
+        print(f"current item {lpd_item}")
         # NOTE overlap_buffer_size is very liberal right now!!!
         # might look into shrinking if necessary.
         # review after .visualize is complete
@@ -74,7 +94,6 @@ def udf(
         # Save as a GeoTIFF
         
         sif_raster_path = f'{lpd_item.id}_sif_740_rasterized.tif'
-        import os
         full_local_path = os.path.abspath(sif_raster_path)
         raster.rio.to_raster(full_local_path)
         # TODO --- if its a good idea, upload to s3 instead of this local thing
