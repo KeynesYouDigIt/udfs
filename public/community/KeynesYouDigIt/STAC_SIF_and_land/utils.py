@@ -10,11 +10,18 @@ import xarray as xr
 import geopandas as gpd
 import stacrs
 from pystac import Item
+from dotenv import load_dotenv
+
 
 def _retrieve_nasa_credentials() -> dict:
     """Makes the Oauth calls to authenticate with EDS and return a set of s3
     same-region, read-only credntials.
     """
+
+    env_file_path = '/tmp/.env'
+    # Write the environment variables to the .env file
+    load_dotenv(env_file_path, override=True)
+
     login_resp = requests.get(
         "https://data.ornldaac.earthdata.nasa.gov/s3credentials", allow_redirects=False
     )
@@ -127,20 +134,23 @@ def get_sif_data(bbox: list[int], overlap_buffer_size: float = 3.0) -> xr.Datase
     return _detect_and_set_rio_data(sif_d_within_box)
 
 
-# IF stacrs not updated?
-def get_land_prod_data(year: int, bbox:gpd.GeoDataFrame) -> list[Item]:
+# Never worked???
+# got stuck with "coroutine is nto iterable"
+# but when awaited got "cannot await list"
+# ???
+# def get_land_prod_data(year: int, bbox:gpd.GeoDataFrame) -> list[Item]:
 
-    # Find Items that intersect the bounding box and time period
-    # year can be passed in as a parameter for the function
-    item_dicts = stacrs.search(
-        "https://data.ldn.auspatious.com/geo_ls_lp/geo_ls_lp_0_1_0.parquet",
-        bbox=bbox.total_bounds,
-        datetime=f"{year}-01-01T00:00:00.000Z/{year}-12-31T23:59:59.999Z",
-    )
-    items: list[Item] = [Item.from_dict(d) for d in item_dicts]
+#     # Find Items that intersect the bounding box and time period
+#     # year can be passed in as a parameter for the function
+#     item_dicts = stacrs.search(
+#         "https://data.ldn.auspatious.com/geo_ls_lp/geo_ls_lp_0_1_0.parquet",
+#         bbox=bbox.total_bounds,
+#         datetime=f"{year}-01-01T00:00:00.000Z/{year}-12-31T23:59:59.999Z",
+#     )
+#     items: list[Item] = [Item.from_dict(d) for d in item_dicts]
 
-    print(type(items))
-    print(len(items))
+#     print(type(items))
+#     print(len(items))
 
 
-    return items
+#     return items
