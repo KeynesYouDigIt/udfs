@@ -13,21 +13,16 @@ from pystac import Item
 from dotenv import load_dotenv
 
 
-def _retrieve_nasa_credentials() -> dict:
+def _retrieve_nasa_credentials(auth: str) -> dict:
     """Makes the Oauth calls to authenticate with EDS and return a set of s3
     same-region, read-only credntials.
     """
-
-    env_file_path = '/tmp/.env'
-    # Write the environment variables to the .env file
-    load_dotenv(env_file_path, override=True)
 
     login_resp = requests.get(
         "https://data.ornldaac.earthdata.nasa.gov/s3credentials", allow_redirects=False
     )
     login_resp.raise_for_status()
 
-    auth = os.getenv("NASA_AUTH_STR")
     if not auth:
         # see https://docs.fused.io/core-concepts/content-management/environment-variables/
         raise Exception("Must set auth for NASA SIF data!")
@@ -89,9 +84,9 @@ def _detect_and_set_rio_data(sif_d: xr.Dataset) -> xr.Dataset:
     return sif_d
 
 
-def get_sif_data(bbox: list[int], overlap_buffer_size: float = 3.0) -> xr.Dataset:
+def get_sif_data(auth: str, bbox: list[int], overlap_buffer_size: float = 3.0) -> xr.Dataset:
 
-    credentials = _retrieve_nasa_credentials()
+    credentials = _retrieve_nasa_credentials(auth)
     access_key = credentials["accessKeyId"]
     secret_key = credentials["secretAccessKey"]
     session_token = credentials["sessionToken"]
