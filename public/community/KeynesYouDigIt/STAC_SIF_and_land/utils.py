@@ -84,7 +84,7 @@ def _detect_and_set_rio_data(sif_d: xr.Dataset) -> xr.Dataset:
     return sif_d
 
 
-def gget_sif_data(auth: str, bbox: list[int], overlap_buffer_size: float = 3.0) -> xr.Dataset:
+def get_sif_data(auth: str, bbox: list[int], overlap_buffer_size: float = 3.0) -> xr.Dataset:
 
     credentials = _retrieve_nasa_credentials(auth)
     access_key = credentials["accessKeyId"]
