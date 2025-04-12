@@ -1,9 +1,13 @@
 import fused
 
-def udf(
-    bbox: fused.types.TileGDF = None,
+@fused.udf
+async def udf(
+    bounds: fused.types.TileGDF = None,
     year: int = 2023,
+    variable: str = "evi2",
+    # variable: str = "sif_740",
 ):
+    "This 'WORKS' but is SUPER distorted"
     import os
     from dotenv import load_dotenv
 
@@ -18,15 +22,17 @@ def udf(
     import shapely
 
     env_file_path = '/tmp/.env'
-    # Write the environment variables to the .env file
     load_dotenv(env_file_path, override=True)
-    getem = fused.load(
-        "https://github.com/KeynesYouDigIt/udfs/tree/stac_land_sif_collection/public/community/KeynesYouDigIt/STAC_SIF_and_land"
-    )
-    print(getem)
+    # for k in os.environ:
+    #     print(f"xx {k}")    
+    auth = os.getenv("NASA_AUTH_STR")
+    get_sif_data = fused.load(
+        "https://github.com/KeynesYouDigIt/udfs/tree/0a4d65597ba8dd637a4417080f5127d538f75180/community/KeynesYouDigIt/STAC_SIF_and_land"
+    ).utils.get_sif_data
 
-    get_sif_data = getem.utils.get_sif_data
-    get_land_prod_data = getem.utils.get_land_prod_data
+    visualize = fused.load(
+        "https://github.com/fusedio/udfs/tree/5cfb808/public/common/"
+    ).utils.visualize
 
 
     # TODO - don't hardcode bbox
@@ -45,8 +51,19 @@ def udf(
         crs=4326)
 
     print("GRABBING LAND PROD DATA")
-    import asyncio
-    lpd = asyncio.run(get_land_prod_data(year=year, bbox=mex_box))
+
+    import inspect
+
+    import stacrs
+    print(inspect.iscoroutinefunction(stacrs.search))  # Should return True
+
+    item_dicts = stacrs.search(
+        "https://data.ldn.auspatious.com/geo_ls_lp/geo_ls_lp_0_1_0.parquet",
+        bbox=mex_box.total_bounds,
+        datetime=f"{year}-01-01T00:00:00.000Z/{year}-12-31T23:59:59.999Z",
+    )
+    lpd = [pystac.Item.from_dict(d) for d in item_dicts]
+
     # Make me a for loop
     # save and add assets (it1.SIF_740, it1.SIF-Unadjusted)
     
@@ -58,7 +75,7 @@ def udf(
         # -- (is it distorted? too big? should be bigger than other lpd vars like ndvi, evi2)
         # THIS IS ASSUMING 4326 (but its not clear if theres a way to confirm the CRS anyways...)
         print("GRABBING SIF DATA")
-        sif_matching = get_sif_data(lpd_item.bbox, overlap_buffer_size=3)
+        sif_matching = get_sif_data(auth=auth, bbox=lpd_item.bbox, overlap_buffer_size=10)
 
         # Convert SIF data to raster using interpolation
         x_array = sif_matching['x'].values
@@ -113,15 +130,22 @@ def udf(
     data = odc.stac.load(
         lpd,
         crs="EPSG:3857",   #"EPSG:4326",  ### HUGE ISSUE ----- RECAST IF NEEDED PLS. "EPSG:3857",
-        bands=['sif_740'], # ['sif_740'], # ['ndvi'],
+        bands=[variable], # ['sif_740'], # ['ndvi'],
         resolution=resolution,
         bbox=mex_box.total_bounds,
     ).squeeze()
 
-    # TODO
-    # FOR EACH 
-    # check CRS
-    # check relevant temporal data
+    import palettable
+    # Create a mask where data is nan
+    mask = (~data[variable].isnull()).squeeze().to_numpy()
 
-if __name__ in "__main__":
-    udf()
+    # Visualize that data as an RGB image.
+    rgb_image = visualize(
+        data=data[variable],
+        mask=mask,
+        min=0,
+        max=360,
+        colormap=palettable.matplotlib.Viridis_20,
+    )
+
+    return rgb_image
